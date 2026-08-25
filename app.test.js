@@ -1,7 +1,8 @@
 // app.test.js - Suite de pruebas unitarias
 // Se ejecutan automáticamente en el pipeline de CI
 
-const { saludar, obtenerFecha } = require('./app');
+// const { saludar, obtenerFecha } = require('./app');
+const { saludar, despedir, obtenerFecha } = require('./app');
 
 // --- Tests de la función saludar() ---
 
@@ -33,4 +34,13 @@ test('obtenerFecha() retorna una cadena de texto (string)', () => {
 test('obtenerFecha() no retorna un valor vacío', () => {
   const fecha = obtenerFecha();
   expect(fecha.length).toBeGreaterThan(0);
+});
+
+test('despedir() retorna el mensaje correcto', () => {
+  const resultado = despedir('Carlos');
+  expect(resultado).toBe('¡Hasta luego, Carlos! Recuerda: haz commit frecuente 👋');
+});
+
+test('despedir() lanza un error si el nombre está vacío', () => {
+  expect(() => despedir('')).toThrow('El nombre no puede estar vacío');
 });

@@ -1,11 +1,17 @@
-// app.js - Aplicación Hola Mundo
-// Punto de entrada principal de la aplicación
+// app.js - Aplicación Hola Mundo (v1.1 - con despedida)
 
 function saludar(nombre) {
   if (!nombre || nombre.trim() === '') {
     throw new Error('El nombre no puede estar vacío');
   }
   return `¡Hola, ${nombre}! Bienvenido al mundo de CI/CD con GitHub Actions 🚀`;
+}
+
+function despedir(nombre) {
+  if (!nombre || nombre.trim() === '') {
+    throw new Error('El nombre no puede estar vacío');
+  }
+  return `¡Hasta luego, ${nombre}! Recuerda: haz commit frecuente 👋`;
 }
 
 function obtenerFecha() {
@@ -16,10 +22,10 @@ function obtenerFecha() {
   });
 }
 
-module.exports = { saludar, obtenerFecha };
+module.exports = { saludar, despedir, obtenerFecha };
 
-// Solo ejecutar si se llama directamente (node app.js)
 if (require.main === module) {
   console.log(saludar('Mundo'));
+  console.log(despedir('Mundo'));
   console.log(`Fecha de ejecución: ${obtenerFecha()}`);
 }
