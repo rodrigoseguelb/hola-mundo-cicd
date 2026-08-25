@@ -1,0 +1,74 @@
+# Workflow: CI Pipeline - Hola Mundo
+# Archivo: .github/workflows/ci.yml
+#
+# Este workflow implementa la anatomía completa de GitHub Actions:
+#   name → on → jobs → runs-on → steps (uses / run)
+#
+# Se ejecuta automáticamente en dos eventos:
+#   1. Cuando se hace PUSH a la rama 'main'
+#   2. Cuando se abre o actualiza un PULL REQUEST hacia 'main'
+
+# ─────────────────────────────────────────
+# 1. NAME — Nombre identificativo del flujo
+# ─────────────────────────────────────────
+name: CI Pipeline - Hola Mundo
+
+# ─────────────────────────────────────────
+# 2. ON — Eventos que disparan el workflow
+# ─────────────────────────────────────────
+on:
+  push:
+    branches:
+      - main          # Se activa al hacer push directo a main
+  pull_request:
+    branches:
+      - main          # Se activa al abrir o actualizar un PR hacia main
+
+# ─────────────────────────────────────────
+# 3. JOBS — Conjunto de tareas a ejecutar
+# ─────────────────────────────────────────
+jobs:
+
+  # ── JOB 1: Verificación de calidad de código ──────────────────────────────
+  verificar-codigo:
+
+    # 4. RUNS-ON — Sistema operativo del Runner (máquina virtual efímera)
+    runs-on: ubuntu-latest
+
+    # 5. STEPS — Pasos secuenciales dentro del job
+    steps:
+
+      # STEP 1 — uses: Clona el repositorio dentro del Runner
+      # Sin este paso, la máquina virtual comienza completamente vacía.
+      - name: 📥 Clonar repositorio (Checkout)
+        uses: actions/checkout@v4
+
+      # STEP 2 — uses: Configura la versión de Node.js en el Runner
+      - name: ⚙️ Configurar Node.js v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'         # Cachea node_modules para acelerar futuras ejecuciones
+
+      # STEP 3 — run: Instala las dependencias del proyecto
+      - name: 📦 Instalar dependencias (npm install)
+        run: npm install
+
+      # STEP 4 — run: Ejecuta los tests unitarios con Jest
+      - name: 🧪 Ejecutar pruebas unitarias (Jest)
+        run: npm test
+
+      # STEP 5 — run: Muestra información de diagnóstico del Runner
+      - name: 🔍 Diagnóstico del entorno
+        run: |
+          echo "=== Información del Runner ==="
+          echo "Sistema operativo: $(uname -a)"
+          echo "Fecha y hora UTC: $(date)"
+          echo "Usuario en ejecución: $(whoami)"
+          echo "Directorio de trabajo: $(pwd)"
+          echo "=== Archivos del proyecto ==="
+          ls -la
+
+      # STEP 6 — run: Ejecuta la aplicación principal
+      - name: 🚀 Ejecutar aplicación Hola Mundo
+        run: node app.js
